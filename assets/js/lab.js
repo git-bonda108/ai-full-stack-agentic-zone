@@ -122,7 +122,7 @@ ${JSON.stringify({ vars: u.vars, canvas: u.canvas, rubric: u.rubric }, null, 2)}
       Z.state.usecase = b.dataset.activate; Z.persist("usecase"); toast("Activated — the runbook now uses this use case"); route();
     });
     document.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => {
-      if (!confirm("Delete this use case from this browser?")) return;
+      if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Click again to delete"; return; }
       Z.state.customUseCases = Z.state.customUseCases.filter((u) => u.id !== b.dataset.del);
       if (Z.state.usecase === b.dataset.del) Z.state.usecase = "p2p-sentinel";
       Z.persist("customUseCases"); Z.persist("usecase"); route();

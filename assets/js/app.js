@@ -237,7 +237,11 @@
     }));
     $("#resetVars").onclick = () => { const s = Z.state.settings._suffix; Z.state.settings = { _suffix: s }; Z.persist("settings"); route(); toast("Variables reset"); };
     $("#newSuffix").onclick = () => { delete Z.state.settings._suffix; Z.persist("settings"); route(); toast("New suffix generated"); };
-    $("#resetProg").onclick = () => { if (confirm("Clear all progress ticks?")) { Z.state.progress = {}; Z.persist("progress"); route(); } };
+    $("#resetProg").onclick = (e) => {
+      const b = e.currentTarget;
+      if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Click again to clear progress"; return; }
+      Z.state.progress = {}; Z.persist("progress"); route(); toast("Progress cleared");
+    };
   }
 
   /* ---------------- router ---------------- */
