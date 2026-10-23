@@ -168,7 +168,7 @@ ${JSON.stringify({ vars: u.vars, canvas: u.canvas, rubric: u.rubric }, null, 2)}
         u.vars.slug = u.vars.slug || u.vars.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
         RUBRIC.forEach(([k]) => { u.rubric[k] = +form["r_" + k].value; });
         Z.state.customUseCases = Z.state.customUseCases.filter((x) => x.id !== u.id).concat([u]);
-        Z.persist("customUseCases"); toast("Saved"); location.hash = "#/lab/view/" + u.id;
+        Z.persist("customUseCases"); toast("Saved"); window.ZoneApp.navigate("#/lab/view/" + u.id);
       };
     }
   }

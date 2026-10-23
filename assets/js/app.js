@@ -247,7 +247,7 @@
   /* ---------------- router ---------------- */
   let current = { name: "home" };
   function route() {
-    const hash = location.hash.replace(/^#\/?/, "");
+    const hash = currentHash.replace(/^#\/?/, "");
     const parts = hash.split("/").filter(Boolean);
     const content = $("#content");
     document.body.classList.remove("nav-open");
@@ -300,7 +300,7 @@
     if (current.name === "lab") window.ZoneLab.wire(route, toast);
   }
 
-  function go(id, idx) { location.hash = `#/m/${id}/${idx}`; }
+  function go(id, idx) { navigate(`#/m/${id}/${idx}`); }
   function step(dir) {
     if (current.name !== "module") return;
     const m = Z.moduleById(current.id);
@@ -313,7 +313,7 @@
       if (!Z.isDone(m.id, current.idx)) Z.toggleDone(m.id, current.idx);
       const mods = Z.activeModules();
       const next = mods[mods.findIndex((x) => x.id === m.id) + 1];
-      location.hash = next ? `#/m/${next.id}` : "#/";
+      navigate(next ? `#/m/${next.id}` : "#/");
     }
   }
 
@@ -325,7 +325,24 @@
     else if (e.key === "t" || e.key === "T") cycleTheme();
   });
 
-  window.addEventListener("hashchange", route);
-  window.ZoneApp = { rerender: route, toast };
-  window.addEventListener("DOMContentLoaded", () => { applyTheme(); route(); });
+  /* Routing works in memory, so it also runs inside sandboxed viewers that block address-bar changes.
+     The address bar is updated when the browser allows it, so normal browsers keep bookmarkable URLs. */
+  let currentHash = "";
+  try { currentHash = location.hash || ""; } catch (e) { currentHash = ""; }
+  function navigate(hash) {
+    currentHash = hash;
+    try { history.replaceState(null, "", hash); } catch (e) { /* sandboxed viewer: in-memory only */ }
+    route();
+  }
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest('a[href^="#/"], a[href="#"]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+    e.preventDefault();
+    navigate(a.getAttribute("href"));
+  });
+  window.addEventListener("hashchange", () => { if (location.hash !== currentHash) { currentHash = location.hash; route(); } });
+  window.ZoneApp = { rerender: route, toast, navigate };
+  const boot = () => { applyTheme(); route(); };
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", boot);
+  else boot();
 })();

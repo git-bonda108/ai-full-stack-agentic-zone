@@ -39,7 +39,8 @@
     const tabs = multi
       ? `<span class="os-tabs">${shells.map((s) => `<button data-shell="${s}" data-cb="${id}" class="${s === shell ? "on" : ""}">${s === "ps" ? "PowerShell" : s === "bash" ? "bash / zsh" : s}</button>`).join("")}</span>`
       : "";
-    const dl = opts.file ? `<button data-dl="${id}">Download</button>` : "";
+    // Embedded viewers (iframes) block downloads, so only offer the button in a normal tab.
+    const dl = opts.file && window.self === window.top ? `<button data-dl="${id}">Download</button>` : "";
     return `<div class="code ${opts.kind === "prompt" ? "prompt" : ""} ${opts.tall ? "tall" : ""}" id="${id}">
       <div class="code-head"><span class="lang">${esc(opts.kind === "prompt" ? "Prompt · Claude Code" : lang)}</span>${label}<span class="spacer"></span>${tabs}${dl}<button data-copy="${id}">Copy</button></div>
       <pre>${highlight(raw, lang, opts.kind, opts.raw)}</pre></div>`;
