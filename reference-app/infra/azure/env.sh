@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Names for every Azure resource. Source it:  source infra/azure/env.sh
 # Override any value by exporting it before sourcing (e.g. export SUFFIX=ab12).
-export SUFFIX="${SUFFIX:-$(whoami | tr -dc 'a-z0-9' | head -c 4)}"
+# Stable per subscription, so globally unique names (ACR, Postgres, SWA) don't collide with other people's
+export SUFFIX="${SUFFIX:-$(az account show --query id -o tsv 2>/dev/null | tr -dc 'a-f0-9' | head -c 6)}"
 export LOCATION="${LOCATION:-eastus}"
 export SWA_LOCATION="${SWA_LOCATION:-eastasia}"     # Static Web Apps regions are limited
 export RG="${RG:-rg-p2p-dev}"
