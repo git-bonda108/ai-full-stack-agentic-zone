@@ -7,6 +7,8 @@ and a Use-Case Lab, so the same runbook can drive any number of applications.
 
 ## Open it
 
+**Live (public):** https://stagenticzoneb6ee57.z13.web.core.windows.net/ (Azure Storage static website, published with `infra/deploy-runbook-azure.sh`)
+
 No build step. Any of these work:
 
 ```bash
