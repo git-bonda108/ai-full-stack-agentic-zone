@@ -50,6 +50,7 @@ use case, the shell (bash / PowerShell) and deck vs scroll view.
 | 03 | Context engineering | token lab, extract-first fact block, tool-output trimming |
 | 04 | Claude Code craft | CLAUDE.md, skills, subagents, hooks lifecycle, MCP, permissions |
 | 05 | Why AI apps fail | the podcast, 10 failure modes, the 9-layer stack, readiness checklist |
+| W | Use-case workshop | brainstorm, knock-out screen, rubric, canvas with 8 golden scenarios, pitch and activate |
 | 06 | Meet the use case | problem, users, agent team, 8 golden scenarios |
 | 07 | Environment setup | Python Rosetta stone, venv, dependencies explained, starter kit |
 | 08 | Plan | backlog in Jira through the Atlassian MCP server (REST fallback) |
@@ -59,6 +60,7 @@ use case, the shell (bash / PowerShell) and deck vs scroll view.
 | 14 | Secure · RAI · XAI | OWASP LLM Top 10 mapping, red team, explain AI decisions and AI-written code |
 | 15 | Deploy | containers, ACR cloud build, Container Apps, SWA, Entra app registration + OIDC, rollback, AKS compare |
 | 16 | Observe | App Insights, KQL, alerts, Phoenix, incident drill back into Jira |
+| 17 | Completion | Definition of Done gates 0–7 with persistent ticks, golden set against the deployed API, demo script, evidence pack |
 
 ## Reference app status
 

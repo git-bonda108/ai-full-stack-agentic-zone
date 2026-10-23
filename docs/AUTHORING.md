@@ -43,7 +43,7 @@ Zone.addModule({
 | `file` | `title, lead, fileRef` (bundled by `tools/build_files.py`) or `code` + `path` + `lang` |
 | `tree` | `title, lead, tree` (lines ending in `/` are folders; `  # note` adds a note) |
 | `quiz` | `title, q, options[], answer (0-based), why` |
-| `checklist` | `title, lead, groups[{title, items[]}]` |
+| `checklist` | `title, lead, groups[{title, items[]}]` (ticks persist per use case) |
 | `layers` | renders the 9-layer stack from `content/data.js` |
 | `backlog` | renders the active use case's `backlog` |
 | `embed` | `title, lead, html` |
@@ -62,7 +62,44 @@ Copy `content/usecases/p2p-sentinel.js`. The parts:
 - `rubric`: eight scores from 1 to 5 (see the Use-Case Lab)
 - `backlog`: epics with stories `{key, title, story, ac, pts}`
 - `diagrams`: Mermaid sources for `context`, `container`, `sequence`, `agents`, `erd`
-- `modules`: optional. Without them, a reveal module and a generated sprint module are built from the canvas (`assets/js/lab.js`)
+- `modules`: optional. Without them, a reveal module and three sprint modules are generated from the canvas (`assets/js/lab.js`)
+
+### Variables the generic modules use
+
+Modules 07–17 are shared by every use case. Their commands and prompts read these `app.*` variables, so
+setup, plan, design, test, secure, deploy, observe and completion show *your* samples, endpoints and
+examples. Set them in `vars`; anything missing falls back to `Zone.runbookDefaults` in `assets/js/core.js`
+(P2P Sentinel's values live in `content/usecases/p2p-sentinel.runbook.js`).
+
+| Variable | Used for | Example (Returns Concierge) |
+|---|---|---|
+| `unit`, `units` | Wording, span names, KQL | `return request`, `returns` |
+| `samplesDir`, `sampleNoun`, `samples`, `samplesPs` | Golden sample files and loops (`samplesPs` is derived) | `data/sample_conversations`, `conv_a_clean conv_b_…` |
+| `samplesApi`, `sampleQuery`, `submitApi`, `decisionField` | Endpoints in commands | `/api/returns/samples`, `""`, `/api/chat`, `decision` |
+| `firstSample`, `traceSample`, `injectionSample`, `holdSample`, `holdDecision`, `holdReason`, `humanAction`, `autoOutcome`, `injectionExpect` | Test, red-team, observe and demo steps | `conv_f_prompt_injection`, `HOLD`, `SERIAL_RETURNER` |
+| `sorShort`, `sorMock`, `stepSpans`, `workflowSpan`, `firstAgent` | Design and observability text | `OMS`, `return.workflow` |
+| `designUsers`, `designSequence`, `designTables`, `treeDomain`, `treeAgents`, `treeRoutes` | Design prompt and project tree | |
+| `exampleStory`, `exampleAc`, `exampleRule`, `exampleBranch`, `exampleBranchLong`, `exampleCommit`, `exampleTest`, `exampleReason` | Plan module's worked example | |
+| `extraEvalCases`, `redteamInputs`, `evidenceXai`, `fairness*`, `inclusive*`, `rawData`, `autoLabel`, `actor`, `dbName`, `referenceNote` | Test, secure, observe text | |
+
+### Team use cases (Use-Case Lab)
+
+The **Use-case workshop** module (W) walks teams from brainstorm to an activated canvas. A canvas with
+the structured fields below generates a full pack: derived variables, a backlog, five diagrams, a reveal
+module (with the prompt that writes `docs/SPEC.md`) and three sprint modules whose prompts are numbered
+steps ending in a verification. The canvas page shows a **Pack readiness** score.
+
+| Canvas field | Format |
+|---|---|
+| `unit` | singular noun, e.g. `expense claim` |
+| `entities` | one per line: `Record: field, field` |
+| `rules` | priority order, one per line: `REASON_CODE [or CODE] → OUTCOME : meaning` |
+| `thresholds` | one per line: `NAME=value # meaning` |
+| `outcomes` | comma separated, the automatic outcome first |
+| `golden` | 8 lines: `sample_name \| scenario \| OUTCOME \| REASON_CODE` |
+
+The **Completion** module (17) is the Definition of Done from plan to production. Its checklist ticks are
+saved per use case in the browser (`Zone.state.checks`).
 
 Breakout teams can do all of this without code: **Use-Case Lab → New use case canvas**, then
 **Export JSON**. The canvas page also shows a ready-made prompt that asks Claude Code to turn the

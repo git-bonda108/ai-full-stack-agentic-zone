@@ -23,17 +23,17 @@ Zone.addModule({
     {
       type: "prompt", title: "Prompt: architecture in Plan mode with the architect subagent",
       lead: "**Shift+Tab → Plan mode**. Design is research and reasoning, so no file edits until you approve.",
-      prompt: "Use the architect subagent. From docs/SPEC.md produce docs/architecture.md containing these Mermaid diagrams, each with a 3-line explanation:\n1. C4 context: users (AP clerk, AP manager, auditor), {{app.name}}, ERP, Jira, LLM provider, Azure Monitor\n2. C4 container: React SPA (Static Web Apps), FastAPI API (Container Apps), mock ERP (Container Apps), PostgreSQL, App Insights\n3. Sequence diagram for one invoice: submit → extract → parallel match & risk → policy decision → resolution → audit → Jira → human decision\n4. Agent topology: which agent has which tools, and that the policy engine (code) owns the decision\n5. ERD for invoices, invoice_lines, cases, audit_events\nThen check the design against the 9 layers and list gaps. Show me the plan first.",
+      prompt: "Use the architect subagent. From docs/SPEC.md produce docs/architecture.md containing these Mermaid diagrams, each with a 3-line explanation:\n1. C4 context: users ({{app.designUsers}}), {{app.name}}, {{app.sorShort}}, Jira, LLM provider, Azure Monitor\n2. C4 container: React SPA (Static Web Apps), FastAPI API (Container Apps), {{app.sorMock}} (Container Apps), PostgreSQL, App Insights\n3. Sequence diagram for {{app.designSequence}}\n4. Agent topology: which agent has which tools, and that the policy engine (code) owns the decision\n5. ERD for {{app.designTables}}\nThen check the design against the 9 layers and list gaps. Show me the plan first.",
       expect: "A plan → approve → `docs/architecture.md` that renders in VS Code's Markdown preview (Mermaid extension).",
     },
     { type: "diagram", title: "Context diagram", mermaidRef: "context" },
     { type: "diagram", title: "Container diagram (what we deploy)", mermaidRef: "container" },
-    { type: "diagram", title: "One invoice, end to end (sequence)", mermaidRef: "sequence" },
+    { type: "diagram", title: "One {{app.unit}}, end to end (sequence)", mermaidRef: "sequence" },
     { type: "diagram", title: "Data model (ERD)", mermaidRef: "erd" },
     {
       type: "prompt", title: "Prompt: contract first, then review it like an engineer",
       lead: "AI proposes the contract; **you** evaluate versioning, idempotency and error semantics before a line of implementation exists.",
-      prompt: "Write docs/api.md: the REST contract for {{app.name}} from SPEC §10. For each endpoint give the method, path, request and response JSON schema with an example, and the error responses (400/404/409/422/503) with when each happens.\nThen critique your own contract on: (1) idempotency (what happens if the same invoice is POSTed twice?), (2) versioning (how do we add a field without breaking the UI?), (3) long-running work (should batch be async with 202 + polling?), (4) pagination for GET /api/cases. Propose concrete changes and mark which ones you recommend for Sprint 1.",
+      prompt: "Write docs/api.md: the REST contract for {{app.name}} from SPEC §10. For each endpoint give the method, path, request and response JSON schema with an example, and the error responses (400/404/409/422/503) with when each happens.\nThen critique your own contract on: (1) idempotency (what happens if the same {{app.unit}} is POSTed twice?), (2) versioning (how do we add a field without breaking the UI?), (3) long-running work (should batch be async with 202 + polling?), (4) pagination for GET /api/cases. Propose concrete changes and mark which ones you recommend for Sprint 1.",
     },
     {
       type: "file", title: "ADR template", path: "docs/adr/0001-hybrid-workflow-not-autonomous-agent.md", lang: "markdown",
@@ -42,7 +42,7 @@ Zone.addModule({
     },
     {
       type: "prompt", title: "Prompt: record the decisions",
-      prompt: "Use the adr-writer skill (or write them directly) to create docs/adr/0002-deterministic-policy-engine.md and docs/adr/0003-azure-container-apps-over-aks.md. For 0003 compare Container Apps, AKS and App Service on: ops effort, cost at our scale (a few hundred invoices/day), scale-to-zero, revisions/rollback, and the skills the team already has. Then add ADR-0002 and ADR-0003 to docs/session-facts.md under Decisions.",
+      prompt: "Use the adr-writer skill (or write them directly) to create docs/adr/0002-deterministic-policy-engine.md and docs/adr/0003-azure-container-apps-over-aks.md. For 0003 compare Container Apps, AKS and App Service on: ops effort, cost at our scale (a few hundred {{app.units}}/day), scale-to-zero, revisions/rollback, and the skills the team already has. Then add ADR-0002 and ADR-0003 to docs/session-facts.md under Decisions.",
     },
     {
       type: "table", title: "Non-functional requirements (agree them now, test them later)",

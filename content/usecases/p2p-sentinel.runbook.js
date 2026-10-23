@@ -1,0 +1,30 @@
+/* P2P Sentinel values for the use-case variables that the generic modules use (see Zone.runbookDefaults in
+   assets/js/core.js). Kept beside p2p-sentinel.js so that file stays unchanged. */
+Zone.extendUseCase("p2p-sentinel", {
+  vars: {
+    unit: "invoice", units: "invoices",
+    samplesDir: "data/sample_invoices", sampleNoun: "sample-invoice", samplesApi: "/api/invoices/samples", submitApi: "/api/invoices",
+    samples: "inv_a_clean inv_b_price_variance inv_c_qty_mismatch inv_d_duplicate inv_e_bank_change inv_f_prompt_injection inv_g_blocked_vendor inv_h_high_value",
+    firstSample: "inv_a_clean", traceSample: "inv_b", injectionSample: "inv_f_prompt_injection",
+    holdSample: "inv_e_bank_change", holdDecision: "HOLD", holdReason: "BANK_DETAILS_CHANGED", humanAction: "reject",
+    autoLabel: "auto-approvals", actor: "vendor", exampleReason: "PRICE_VARIANCE",
+    injectionExpect: "`HOLD` with `PROMPT_INJECTION_SUSPECTED`.",
+    redteamInputs: "Generate 10 malicious invoice texts covering: hidden instructions, instructions in another language, a fake 'system' section, a request to change bank details, an extremely long invoice (cost attack), a total that doesn't add up, and Unicode look-alike characters in the PO number.",
+    extraEvalCases: "(1) a price variance of exactly 2.00% that must AUTO_APPROVE, (2) an invoice in German with the same content as inv_a_clean that must AUTO_APPROVE. Run the evals; if the German one fails in offline mode, explain why and propose whether the fix belongs in extraction or in the test.",
+    evidenceXai: "Per line: invoice vs PO vs GR, variance %, threshold.",
+    fairnessControl: "Same rules for every vendor; no vendor attributes in prompts beyond what's needed",
+    fairnessEvidence: "Policy unit tests; vendor-level decision distribution in App Insights",
+    inclusiveControl: "Accessible UI; plain-language explanations; multilingual invoice test",
+    inclusiveEvidence: "Accessibility review; German golden case",
+    rawData: "raw invoices", sorShort: "ERP", sorMock: "mock ERP",
+    stepSpans: "`step.extract`, `step.match`, `step.risk`, `step.resolve`", workflowSpan: "invoice.workflow", firstAgent: "Intake Agent",
+    designUsers: "AP clerk, AP manager, auditor",
+    designSequence: "one invoice: submit → extract → parallel match & risk → policy decision → resolution → audit → Jira → human decision",
+    designTables: "invoices, invoice_lines, cases, audit_events",
+    treeDomain: "matching.py  risk.py  policy.py", treeAgents: "intake_agent.py  match_agent.py  risk_agent.py  resolution_agent.py", treeRoutes: "routes_invoices.py  routes_cases.py",
+    exampleStory: "Route price-variance invoices to an AP clerk", exampleAc: "Given an invoice priced 6.7% above the PO, when it is processed, then the decision is ROUTE_TO_HUMAN with PRICE_VARIANCE.",
+    exampleRule: "price tolerance rule", exampleBranch: "tolerance", exampleBranchLong: "price-tolerance", exampleCommit: "add tolerance rule", exampleTest: "test_price_variance_over_tolerance",
+    dbName: "p2p_sentinel",
+    referenceNote: "The finished version is in `reference-app/` of the training repo. Use it to compare, or to recover if a sprint goes sideways",
+  },
+});

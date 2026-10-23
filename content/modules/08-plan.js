@@ -55,7 +55,7 @@ Zone.addModule({
     {
       type: "prompt", title: "Prompt: generate the backlog and push it to Jira",
       lead: "Two steps on purpose: **draft → human review → create**. This is the human-in-the-loop habit we want in the app, too.",
-      prompt: "/jira-user-story Create the backlog for {{app.name}} from docs/SPEC.md.\n\nStructure: 4 epics: (1) Foundations: ERP, data, deterministic core, API; (2) Agents & guardrails; (3) Experience & explainability; (4) Quality, deploy & operate.\nFor each epic, 3–5 INVEST stories with Gherkin acceptance criteria, story points (1/2/3/5/8) and labels sprint-1/2/3/hardening.\nInclude at least one story per sample-invoice scenario in SPEC §8, written so the acceptance criteria can become a test.\n\nShow me the full draft as a table first and WAIT for my approval. After I approve, create the epics and stories in Jira project {{jira.project}}, link stories to epics, then write the created keys into docs/session-facts.md.",
+      prompt: "/jira-user-story Create the backlog for {{app.name}} from docs/SPEC.md.\n\nStructure: 4 epics: (1) Foundations: ERP, data, deterministic core, API; (2) Agents & guardrails; (3) Experience & explainability; (4) Quality, deploy & operate.\nFor each epic, 3–5 INVEST stories with Gherkin acceptance criteria, story points (1/2/3/5/8) and labels sprint-1/2/3/hardening.\nInclude at least one story per {{app.sampleNoun}} scenario in SPEC §8, written so the acceptance criteria can become a test.\n\nShow me the full draft as a table first and WAIT for my approval. After I approve, create the epics and stories in Jira project {{jira.project}}, link stories to epics, then write the created keys into docs/session-facts.md.",
       expect: "A draft table → you reply \"approved\" (or edit) → issues created in Jira → keys like `{{jira.project}}-2…{{jira.project}}-20` recorded in the fact block.",
     },
     {
@@ -64,22 +64,22 @@ Zone.addModule({
       blocks: [
         { label: "Load .env into this shell (never echo it)", cmd: { bash: "set -a; source .env; set +a", ps: "Get-Content .env | Where-Object { $_ -match '^[A-Z_]+=' } | ForEach-Object { $k,$v = $_ -split '=',2; [Environment]::SetEnvironmentVariable($k,$v) }" } },
         { label: "List projects", cmd: { bash: "curl -s -u \"$JIRA_EMAIL:$JIRA_API_TOKEN\" \"https://{{jira.site}}/rest/api/3/project/search\" | python -m json.tool | head -30", ps: "$auth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(\"$env:JIRA_EMAIL`:$env:JIRA_API_TOKEN\"))\nInvoke-RestMethod -Headers @{Authorization=\"Basic $auth\"} \"https://{{jira.site}}/rest/api/3/project/search\"" } },
-        { label: "Create a story", cmd: { bash: "curl -s -u \"$JIRA_EMAIL:$JIRA_API_TOKEN\" -H 'Content-Type: application/json' \\\n  -X POST \"https://{{jira.site}}/rest/api/3/issue\" -d '{\n  \"fields\": {\n    \"project\": {\"key\": \"{{jira.project}}\"},\n    \"issuetype\": {\"name\": \"Story\"},\n    \"summary\": \"Route price-variance invoices to an AP clerk\",\n    \"labels\": [\"sprint-1\"],\n    \"description\": {\"type\": \"doc\", \"version\": 1, \"content\": [{\"type\": \"paragraph\",\n      \"content\": [{\"type\": \"text\", \"text\": \"Given an invoice priced 6.7% above the PO, when it is processed, then the decision is ROUTE_TO_HUMAN with PRICE_VARIANCE.\"}]}]}\n  }}'", ps: "$body = @{ fields = @{ project = @{ key = \"{{jira.project}}\" }; issuetype = @{ name = \"Story\" }; summary = \"Route price-variance invoices to an AP clerk\"; labels = @(\"sprint-1\") } } | ConvertTo-Json -Depth 6\nInvoke-RestMethod -Method Post -Headers @{Authorization=\"Basic $auth\"} -ContentType 'application/json' -Body $body \"https://{{jira.site}}/rest/api/3/issue\"" }, expect: "`{\"id\":\"10012\",\"key\":\"{{jira.project}}-12\",…}`" },
+        { label: "Create a story", cmd: { bash: "curl -s -u \"$JIRA_EMAIL:$JIRA_API_TOKEN\" -H 'Content-Type: application/json' \\\n  -X POST \"https://{{jira.site}}/rest/api/3/issue\" -d '{\n  \"fields\": {\n    \"project\": {\"key\": \"{{jira.project}}\"},\n    \"issuetype\": {\"name\": \"Story\"},\n    \"summary\": \"{{app.exampleStory}}\",\n    \"labels\": [\"sprint-1\"],\n    \"description\": {\"type\": \"doc\", \"version\": 1, \"content\": [{\"type\": \"paragraph\",\n      \"content\": [{\"type\": \"text\", \"text\": \"{{app.exampleAc}}\"}]}]}\n  }}'", ps: "$body = @{ fields = @{ project = @{ key = \"{{jira.project}}\" }; issuetype = @{ name = \"Story\" }; summary = \"{{app.exampleStory}}\"; labels = @(\"sprint-1\") } } | ConvertTo-Json -Depth 6\nInvoke-RestMethod -Method Post -Headers @{Authorization=\"Basic $auth\"} -ContentType 'application/json' -Body $body \"https://{{jira.site}}/rest/api/3/issue\"" }, expect: "`{\"id\":\"10012\",\"key\":\"{{jira.project}}-12\",…}`" },
       ],
     },
     {
       type: "flow", title: "Traceability: from story to production",
       lead: "An auditor (or a panel) asks: *why does this code exist, and how do we know it works?* The Jira key answers it at every hop.",
       nodes: [
-        { e: "📝", b: "Story", s: "{{jira.project}}-12" }, { e: "🌿", b: "Branch", s: "feature/{{jira.project}}-12-tolerance" },
-        { e: "💾", b: "Commit", s: "\"{{jira.project}}-12: add tolerance rule\"" }, { e: "🧪", b: "Test", s: "test_price_variance_over_tolerance" },
+        { e: "📝", b: "Story", s: "{{jira.project}}-12" }, { e: "🌿", b: "Branch", s: "feature/{{jira.project}}-12-{{app.exampleBranch}}" },
+        { e: "💾", b: "Commit", s: "\"{{jira.project}}-12: {{app.exampleCommit}}\"" }, { e: "🧪", b: "Test", s: "{{app.exampleTest}}" },
         { e: "🔀", b: "PR", s: "CI evidence attached" }, { e: "🚀", b: "Release", s: "revision + deployments.md" },
       ],
       points: ["The provenance ledger (`.ai-trace/ledger.jsonl`) adds one more link: **which files the AI wrote, in which session**"],
     },
     {
       type: "prompt", title: "Prompt: start a story the traceable way",
-      prompt: "We're starting story {{jira.project}}-12 (price tolerance rule). Using the Atlassian MCP tools, read the story and its acceptance criteria, move it to In Progress, and create the branch feature/{{jira.project}}-12-price-tolerance. Then summarise the acceptance criteria as a checklist of pytest test names. Don't implement anything yet.",
+      prompt: "We're starting story {{jira.project}}-12 ({{app.exampleRule}}). Using the Atlassian MCP tools, read the story and its acceptance criteria, move it to In Progress, and create the branch feature/{{jira.project}}-12-{{app.exampleBranchLong}}. Then summarise the acceptance criteria as a checklist of pytest test names. Don't implement anything yet.",
     },
     {
       type: "quiz", title: "Checkpoint",

@@ -202,7 +202,14 @@
         break;
       case "checklist":
         h += card.lead ? `<div class="lead">${md(card.lead)}</div>` : "";
-        h += `<div class="grid g2" style="margin-top:12px">${card.groups.map((g) => `<div class="session"><h4>${esc(g.title)}</h4>${g.items.map((it) => `<label style="display:flex;gap:8px;font-size:.88rem;margin:6px 0"><input type="checkbox"> <span>${mdInline(it)}</span></label>`).join("")}</div>`).join("")}</div>`;
+        {
+          /* Ticks persist per use case + module + card (Z.state.checks), so teams can track completion. */
+          const base = `${Z.activeUseCase().id}:${cardKey}`;
+          const keys = card.groups.flatMap((g, gi) => g.items.map((_, ii) => `${base}:${gi}:${ii}`));
+          const n = keys.filter((k) => Z.state.checks[k]).length;
+          h += `<div class="ck-count tag ${n === keys.length ? "green" : ""}" data-ck-count="${base}">${n} / ${keys.length} done</div>`;
+          h += `<div class="grid g2" style="margin-top:12px">${card.groups.map((g, gi) => `<div class="session"><h4>${esc(Z.tpl(g.title))}</h4>${g.items.map((it, ii) => `<label style="display:flex;gap:8px;font-size:.88rem;margin:6px 0"><input type="checkbox" data-ck="${base}:${gi}:${ii}" ${Z.state.checks[`${base}:${gi}:${ii}`] ? "checked" : ""}> <span>${mdInline(it)}</span></label>`).join("")}</div>`).join("")}</div>`;
+        }
         break;
       default:
         h += md(card.lead || "");
@@ -240,8 +247,10 @@
       <div><h5>Where it lives in {{app.name}}</h5><ul>${l.where.map((f) => `<li>${mdInline(f)}</li>`).join("")}</ul></div></div></button>`).join("")}</div>`;
   }
 
+  let cardKey = "";
   function cardHtml(mod, card, idx, total) {
     const done = Z.isDone(mod.id, idx);
+    cardKey = `${mod.id}:${idx}`;
     return `<article class="card" data-idx="${idx}">
       <div class="card-type">${TYPE_LABEL[card.type] || card.type}${card.time ? ` · <span style="color:var(--ink-3)">${esc(card.time)}</span>` : ""}</div>
       <h2>${esc(Z.tpl(card.title || ""))}</h2>
@@ -273,6 +282,15 @@
     root.querySelectorAll(".os-tabs button").forEach((b) => b.addEventListener("click", () => {
       Z.state.shell = b.dataset.shell; Z.persist("shell");
       window.ZoneApp && window.ZoneApp.rerender();
+    }));
+    root.querySelectorAll("[data-ck]").forEach((c) => c.addEventListener("change", () => {
+      if (c.checked) Z.state.checks[c.dataset.ck] = true; else delete Z.state.checks[c.dataset.ck];
+      Z.persist("checks");
+      const base = c.dataset.ck.split(":").slice(0, 3).join(":");
+      const all = root.querySelectorAll(`[data-ck^="${base}:"]`);
+      const n = [...all].filter((x) => x.checked).length;
+      const tag = root.querySelector(`[data-ck-count="${base}"]`);
+      if (tag) { tag.textContent = `${n} / ${all.length} done`; tag.classList.toggle("green", n === all.length); }
     }));
     root.querySelectorAll(".flip").forEach((f) => f.addEventListener("click", () => f.classList.toggle("flipped")));
     root.querySelectorAll(".layer").forEach((l) => l.addEventListener("click", () => l.classList.toggle("open")));

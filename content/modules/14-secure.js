@@ -24,8 +24,8 @@ Zone.addModule({
     {
       type: "lab", title: "Red-team your own app", time: "15 min",
       steps: [
-        { text: "Run the injection sample through the API and check it's held:", cmd: { bash: "curl -s -X POST localhost:8000/api/invoices/samples/inv_f_prompt_injection | python -m json.tool | grep -E 'decision|reason'", ps: "(Invoke-RestMethod -Method Post http://localhost:8000/api/invoices/samples/inv_f_prompt_injection) | Select-Object decision, reason_codes" }, expect: "`HOLD` with `PROMPT_INJECTION_SUSPECTED`." },
-        { prompt: "Act as a red team against {{app.name}}. Generate 10 malicious invoice texts covering: hidden instructions, instructions in another language, a fake 'system' section, a request to change bank details, an extremely long invoice (cost attack), a total that doesn't add up, and Unicode look-alike characters in the PO number. Save them under tests/redteam/ and write a parametrised test asserting none of them is AUTO_APPROVE. Run it and report which ones got through and why." },
+        { text: "Run the injection sample through the API and check it's held:", cmd: { bash: "curl -s -X POST \"localhost:8000{{app.samplesApi}}/{{app.injectionSample}}{{app.sampleQuery}}\" | python -m json.tool | grep -E '{{app.decisionField}}|reason'", ps: "(Invoke-RestMethod -Method Post \"http://localhost:8000{{app.samplesApi}}/{{app.injectionSample}}{{app.sampleQuery}}\") | Select-Object {{app.decisionField}}, reason_codes" }, expect: "{{app.injectionExpect}}" },
+        { prompt: "Act as a red team against {{app.name}}. {{app.redteamInputs}} Save them under tests/redteam/ and write a parametrised test asserting none of them is {{app.autoOutcome}}. Run it and report which ones got through and why." },
       ],
     },
     {
@@ -40,8 +40,8 @@ Zone.addModule({
       type: "flips", title: "Explainability: two different questions",
       lead: "**XAI for the decision** (why did the app decide this?) and **XAI for the code** (why does this AI-written file exist and what does it do?). Enterprises need both.",
       items: [
-        { icon: "🏷️", front: "Reason codes", sub: "decision XAI", back: "Every decision carries machine-readable codes (`PRICE_VARIANCE`) that map to a rule in `policy.py`." },
-        { icon: "📊", front: "Evidence table", sub: "decision XAI", back: "Per line: invoice vs PO vs GR, variance %, threshold. The numbers that triggered the rule." },
+        { icon: "🏷️", front: "Reason codes", sub: "decision XAI", back: "Every decision carries machine-readable codes (`{{app.exampleReason}}`) that map to a rule in `policy.py`." },
+        { icon: "📊", front: "Evidence table", sub: "decision XAI", back: "{{app.evidenceXai}} The numbers that triggered the rule." },
         { icon: "🕰️", front: "Audit trail", sub: "decision XAI", back: "Each agent step, its typed output and timing, plus the human's decision and comment." },
         { icon: "🧾", front: "Provenance ledger", sub: "code XAI", back: "The PostToolUse hook logs every file Claude wrote: `.ai-trace/ledger.jsonl`." },
         { icon: "📖", front: "EXPLAIN.md", sub: "code XAI", back: "The `explain-code` skill turns the ledger into a per-file walkthrough for reviewers." },
@@ -61,10 +61,10 @@ Zone.addModule({
       lead: "Microsoft's six Responsible AI principles (we deploy on Azure), made concrete.",
       head: ["Principle", "Control in {{app.name}}", "Evidence"],
       rows: [
-        ["Fairness", "Same rules for every vendor; no vendor attributes in prompts beyond what's needed", "Policy unit tests; vendor-level decision distribution in App Insights"],
+        ["Fairness", "{{app.fairnessControl}}", "{{app.fairnessEvidence}}"],
         ["Reliability & safety", "Deterministic decisions, guardrails, offline fallback, HITL", "Eval report; runbook drill"],
         ["Privacy & security", "Data minimisation (trimming), secrets in a store, masked logs, least-privilege tools", "Security review; settings.json denies"],
-        ["Inclusiveness", "Accessible UI; plain-language explanations; multilingual invoice test", "Accessibility review; German golden case"],
+        ["Inclusiveness", "{{app.inclusiveControl}}", "{{app.inclusiveEvidence}}"],
         ["Transparency", "Reason codes, evidence, system card, AI-written-code ledger", "`docs/responsible-ai.md`, `EXPLAIN.md`"],
         ["Accountability", "Named owners, human approval, immutable audit trail", "Audit events; ADRs; Jira history"],
       ],
@@ -74,7 +74,7 @@ Zone.addModule({
       groups: [
         { title: "Ownership", items: ["Business owner and technical owner named in `docs/responsible-ai.md`", "On-call rota + runbook", "Change process for prompts and models (PR + eval gate)"] },
         { title: "Models & prompts", items: ["Model and version recorded per environment", "Prompts in git, reviewed like code", "Model change → full eval run → ADR"] },
-        { title: "Data", items: ["Data processed by the LLM listed (fields, not just 'invoices')", "Retention for raw invoices and audit events agreed", "Provider data-use terms reviewed (no training on our data)"] },
+        { title: "Data", items: ["Data processed by the LLM listed (fields, not just '{{app.units}}')", "Retention for {{app.rawData}} and audit events agreed", "Provider data-use terms reviewed (no training on our data)"] },
         { title: "Usage of AI in the build", items: ["`.ai-trace/ledger.jsonl` archived with the release", "All AI-written code reviewed by a human (PR approvals)", "No secrets ever entered a prompt (hook logs)"] },
       ],
     },

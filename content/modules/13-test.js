@@ -38,7 +38,7 @@ Zone.addModule({
       lead: "`evals/golden_set.jsonl` holds one line per scenario: input file, expected decision, expected reason codes. The runner scores exact matches and timings and writes a report.",
       steps: [
         { cmd: "python -m evals.run_evals", expect: "8/8 passed, with a per-case table, latency, and `docs/test-evidence/eval-report.md` + `.json` written." },
-        { prompt: "Add two new golden cases to evals/golden_set.jsonl and data/sample_invoices/: (1) a price variance of exactly 2.00% that must AUTO_APPROVE, (2) an invoice in German with the same content as inv_a_clean that must AUTO_APPROVE. Run the evals; if the German one fails in offline mode, explain why and propose whether the fix belongs in extraction or in the test." },
+        { prompt: "Add two new golden cases to evals/golden_set.jsonl and {{app.samplesDir}}/: {{app.extraEvalCases}}" },
         { text: "Optional LLM judge for explanation quality:", prompt: "Add evals/judge.py: for each case, ask a judge model (LLM_MODEL) to score the explanation 1–5 on (a) mentions every reason code, (b) cites at least one number from the evidence, (c) no claim of approval unless AUTO_APPROVE. Use a fixed rubric prompt and temperature 0. Skip gracefully when LLM_PROVIDER=offline. Write the scores into the eval report." },
       ],
     },
@@ -47,7 +47,7 @@ Zone.addModule({
       type: "lab", title: "End-to-end with Playwright (optional)", time: "10 min",
       steps: [
         { cmd: "cd frontend && npm install -D @playwright/test && npx playwright test", expect: "The spec submits a sample and checks the decision badge. (In the VM, Chromium may already be installed; if not, `npx playwright install chromium`.)" },
-        { prompt: "Write frontend/e2e/hitl.spec.ts: submit inv_e_bank_change, open the case, assert the HOLD banner and BANK_DETAILS_CHANGED chip, reject with a comment, and assert the timeline shows the human decision. Take a screenshot into docs/test-evidence/e2e-hold.png." },
+        { prompt: "Write frontend/e2e/hitl.spec.ts: submit {{app.holdSample}}, open the case, assert the {{app.holdDecision}} banner and {{app.holdReason}} chip, {{app.humanAction}} with a comment, and assert the timeline shows the human decision. Take a screenshot into docs/test-evidence/e2e-hold.png." },
       ],
     },
     {

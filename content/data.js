@@ -27,7 +27,7 @@ Zone.set("sessions", [
   },
   {
     when: "Saturday 7", title: "Ship, observe & breakout", color: "coral",
-    agenda: [["0:00", "Containers + Azure deploy", "deploy"], ["1:30", "Observe, monitor, operate", "observe"], ["2:30", "Break"], ["2:40", "Breakout: Use-Case Lab → pick the best"]],
+    agenda: [["0:00", "Containers + Azure deploy", "deploy"], ["1:30", "Observe, monitor, operate", "observe"], ["2:30", "Break"], ["2:40", "Breakout: use-case workshop → pick the best", "workshop"], ["3:40", "Definition of Done check", "complete"]],
   },
 ]);
 
