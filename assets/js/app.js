@@ -32,6 +32,7 @@
       <a href="#/commands" class="${activeId === "commands" ? "active" : ""}"><span class="num">⌨️</span>Command library</a>
       <a href="#/layers" class="${activeId === "layers" ? "active" : ""}"><span class="num">🏗️</span>9-layer stack</a>
       <a href="#/lab" class="${activeId === "lab" ? "active" : ""}"><span class="num">🧪</span>Use-Case Lab</a>
+      <a href="#/resources" class="${activeId === "resources" ? "active" : ""}"><span class="num">📚</span>Resources</a>
       <a href="#/glossary" class="${activeId === "glossary" ? "active" : ""}"><span class="num">📖</span>Glossary</a>
       <a href="#/settings" class="${activeId === "settings" ? "active" : ""}"><span class="num">⚙️</span>My variables</a></nav>`;
     $("#side").innerHTML = h;
@@ -116,6 +117,7 @@
     });
 
     h += `<div class="section-h"><h2>Toolkit</h2></div><div class="grid g4">
+      <a class="tile accent-sky" href="#/resources"><div class="ico">📚</div><h3>Resources</h3><p>Vetted skills, subagents, hooks, MCP servers, SDK examples and use-case evidence.</p></a>
       <a class="tile accent-violet" href="#/prompts"><div class="ico">💬</div><h3>Prompt library</h3><p>Every prompt, by SDLC stage, ready to paste.</p></a>
       <a class="tile accent-teal" href="#/commands"><div class="ico">⌨️</div><h3>Command library</h3><p>Setup, Azure, Docker, tests, all with your variables filled in.</p></a>
       <a class="tile accent-coral" href="#/layers"><div class="ico">🏗️</div><h3>9-layer stack</h3><p>Why production AI fails, and the control for each layer.</p></a>
@@ -207,6 +209,24 @@
       <div class="grid g3" id="gList">${g.map(([t, d]) => `<div class="tile" data-t="${esc((t + " " + d).toLowerCase())}"><h3>${esc(t)}</h3><p>${R.mdInline(d)}</p></div>`).join("")}</div></div>`;
   }
 
+  /* ---------------- resources ---------------- */
+  function pageResources() {
+    const r = Z.data.resources || { groups: [] };
+    const verdictTag = { "Use in class": "green", "Reading": "sky", "Instructor only": "amber" };
+    let h = `<div class="accent-sky"><header class="mod-head"><div class="ico">📚</div><div><h1>Resources</h1><p>${R.mdInline(r.lead || "")}</p></div><div></div></header>
+      <div class="searchbar"><input id="rQ" placeholder="Filter resources…" aria-label="Filter resources"></div>`;
+    (r.groups || []).forEach((g) => {
+      h += `<div class="section-h"><h2>${g.icon || ""} ${esc(g.title)}</h2><span class="hint">${esc(g.hint || "")}</span></div><div class="grid g3">`;
+      h += g.items.map((it) => `<div class="tile res-item" data-t="${esc((it.name + " " + it.desc + " " + (it.note || "")).toLowerCase())}"><span class="kicker">${esc(it.kind || "")}</span>
+        <h3><a href="${esc(it.url)}" target="_blank" rel="noopener">${esc(it.name)}</a></h3><p>${R.mdInline(it.desc)}</p>
+        ${it.note ? `<p style="font-size:.82rem;color:var(--ink-3)">${R.mdInline(it.note)}</p>` : ""}
+        <div class="meta"><span class="tag ${verdictTag[it.verdict] || ""}">${esc(it.verdict)}</span></div></div>`).join("");
+      h += `</div>`;
+    });
+    if (r.footer) h += `<div class="card" style="margin-top:18px">${R.md(r.footer)}</div>`;
+    return h + `</div>`;
+  }
+
   /* ---------------- settings ---------------- */
   function pageSettings() {
     const d = Z.defaults();
@@ -264,6 +284,7 @@
       html = pageLibrary(parts[0] === "prompts" ? "prompt" : "cmd"); active = parts[0];
       crumbs = `<b>${parts[0] === "prompts" ? "Prompt library" : "Command library"}</b>`; current = { name: parts[0] };
     } else if (parts[0] === "layers") { html = pageLayers(); active = "layers"; crumbs = "<b>9-layer stack</b>"; current = { name: "layers" }; }
+    else if (parts[0] === "resources") { html = pageResources(); active = "resources"; crumbs = "<b>Resources</b>"; current = { name: "resources" }; }
     else if (parts[0] === "glossary") { html = pageGlossary(); active = "glossary"; crumbs = "<b>Glossary</b>"; current = { name: "glossary" }; }
     else if (parts[0] === "settings") { html = pageSettings(); active = "settings"; crumbs = "<b>My variables</b>"; current = { name: "settings" }; }
     else if (parts[0] === "lab") { html = window.ZoneLab.page(parts[1], parts[2]); active = "lab"; crumbs = "<b>Use-Case Lab</b>"; current = { name: "lab" }; }
@@ -294,6 +315,9 @@
     }
     if (current.name === "prompts" || current.name === "commands") wireLibrary();
     if (current.name === "settings") wireSettings();
+    if (current.name === "resources") {
+      $("#rQ").oninput = (e) => { const t = e.target.value.toLowerCase(); document.querySelectorAll(".res-item").forEach((el) => el.style.display = el.dataset.t.includes(t) ? "" : "none"); };
+    }
     if (current.name === "glossary") {
       $("#gQ").oninput = (e) => { const t = e.target.value.toLowerCase(); document.querySelectorAll("#gList .tile").forEach((el) => el.style.display = el.dataset.t.includes(t) ? "" : "none"); };
     }
