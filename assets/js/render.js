@@ -40,7 +40,7 @@
       ? `<span class="os-tabs">${shells.map((s) => `<button data-shell="${s}" data-cb="${id}" class="${s === shell ? "on" : ""}">${s === "ps" ? "PowerShell" : s === "bash" ? "bash / zsh" : s}</button>`).join("")}</span>`
       : "";
     // Embedded viewers (iframes) block downloads, so only offer the button in a normal tab.
-    const dl = opts.file && window.self === window.top ? `<button data-dl="${id}">Download</button>` : "";
+    const dl = opts.file && (window.self === window.top || window.claude) ? `<button data-dl="${id}">Download</button>` : "";
     return `<div class="code ${opts.kind === "prompt" ? "prompt" : ""} ${opts.tall ? "tall" : ""}" id="${id}">
       <div class="code-head"><span class="lang">${esc(opts.kind === "prompt" ? "Prompt · Claude Code" : lang)}</span>${label}<span class="spacer"></span>${tabs}${dl}<button data-copy="${id}">Copy</button></div>
       <pre>${highlight(raw, lang, opts.kind, opts.raw)}</pre></div>`;
@@ -265,11 +265,9 @@
     }));
     root.querySelectorAll("[data-dl]").forEach((b) => b.addEventListener("click", () => {
       const entry = codeStore[b.dataset.dl];
-      const name = (entry.opts.file || "file.txt").split("/").pop();
-      const blob = new Blob([plainOf(b.dataset.dl)], { type: "text/plain" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob); a.download = name; a.click();
-      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      let name = (entry.opts.file || "file.txt").split("/").pop();
+      if (!/\.(txt|json|md|csv|html)$/i.test(name)) name += ".txt"; // hosted viewers allow only some extensions
+      Z.saveFile(name, plainOf(b.dataset.dl), window.ZoneApp && window.ZoneApp.toast);
     }));
     root.querySelectorAll(".os-tabs button").forEach((b) => b.addEventListener("click", () => {
       Z.state.shell = b.dataset.shell; Z.persist("shell");

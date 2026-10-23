@@ -118,6 +118,30 @@
       });
     },
 
+    /* ---------- files ---------- */
+    /* Save a generated file. Inside the claude.ai viewer this goes through the `downloads`
+       capability (the viewer confirms); in a normal browser tab it is a plain download. */
+    async saveFile(filename, data, toast) {
+      const say = toast || (() => {});
+      let downloads = null;
+      try { if (window.claude && typeof window.claude.use === "function") downloads = await window.claude.use("downloads"); } catch (e) { downloads = null; }
+      if (downloads) {
+        try {
+          const res = await downloads.save({ filename, data });
+          if (res && res.status === "saved") say("Saved " + filename);
+        } catch (err) {
+          say(err && err.code === "declined" ? "Download cancelled" : "Couldn't save the file here (" + ((err && err.code) || "unavailable") + ")");
+        }
+        return;
+      }
+      const blob = data instanceof Blob ? data : new Blob([data], { type: "text/plain" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      say("Downloaded " + filename);
+    },
+
     /* ---------- progress ---------- */
     isDone(modId, idx) { return !!(this.state.progress[modId] && this.state.progress[modId][idx]); },
     toggleDone(modId, idx) {

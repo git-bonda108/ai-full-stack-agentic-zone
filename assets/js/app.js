@@ -45,6 +45,7 @@
       <select class="pill-btn hide-sm" id="ucSel" aria-label="Active use case">${ucs.map((u) => `<option value="${u.id}" ${u.id === uc.id ? "selected" : ""}>${u.icon || "📦"} ${esc(u.vars.name)}</option>`).join("")}</select>
       <button class="pill-btn hide-sm ${Z.state.shell === "ps" ? "on" : ""}" id="shellBtn" title="Toggle command shell">${Z.state.shell === "ps" ? "PowerShell" : "bash"}</button>
       <button class="pill-btn hide-sm" id="viewBtn" title="Deck or scroll view">${Z.state.view === "deck" ? "🃏 Deck" : "📜 Scroll"}</button>
+      <button class="pill-btn" id="excelBtn" title="Export the runbook to an Excel workbook">⬇ Excel</button>
       <button class="pill-btn" id="presentBtn" title="Presenter mode (P)">📽️</button>
       <button class="pill-btn" id="themeBtn" title="Theme (T)">${Z.state.theme === "dark" ? "🌙" : Z.state.theme === "light" ? "☀️" : "🌓"}</button>`;
     $("#menuBtn").onclick = () => document.body.classList.toggle("nav-open");
@@ -52,6 +53,7 @@
     $("#shellBtn").onclick = () => { Z.state.shell = Z.state.shell === "ps" ? "bash" : "ps"; Z.persist("shell"); route(); };
     $("#viewBtn").onclick = () => { Z.state.view = Z.state.view === "deck" ? "scroll" : "deck"; Z.persist("view"); route(); };
     $("#presentBtn").onclick = togglePresent;
+    $("#excelBtn").onclick = () => window.ZoneExport.exportExcel(toast);
     $("#themeBtn").onclick = cycleTheme;
   }
 
@@ -119,7 +121,8 @@
       <a class="tile accent-violet" href="#/prompts"><div class="ico">💬</div><h3>Prompt library</h3><p>Every prompt, by SDLC stage, ready to paste.</p></a>
       <a class="tile accent-teal" href="#/commands"><div class="ico">⌨️</div><h3>Command library</h3><p>Setup, Azure, Docker, tests, all with your variables filled in.</p></a>
       <a class="tile accent-coral" href="#/layers"><div class="ico">🏗️</div><h3>9-layer stack</h3><p>Why production AI fails, and the control for each layer.</p></a>
-      <a class="tile accent-amber" href="#/lab"><div class="ico">🧪</div><h3>Use-Case Lab</h3><p>Breakout rooms: canvas, rubric, pick the best one.</p></a></div>`;
+      <a class="tile accent-amber" href="#/lab"><div class="ico">🧪</div><h3>Use-Case Lab</h3><p>Breakout rooms: canvas, rubric, pick the best one.</p></a></div>
+      <div class="uc-switch" style="margin-top:16px"><span class="lbl">Follow along offline</span><span style="color:var(--ink-2);font-size:.9rem">One Excel workbook: every card, prompt and command, the backlog, quizzes and your variables, with Done and Notes columns.</span><span style="flex:1"></span><button class="btn sm" id="excelHome">⬇ Export to Excel</button></div>`;
     return h;
   }
 
@@ -292,6 +295,8 @@
         if (dot) dot.classList.toggle("done", on);
       });
     }
+    const xh = document.getElementById("excelHome");
+    if (xh) xh.onclick = () => window.ZoneExport.exportExcel(toast);
     if (current.name === "prompts" || current.name === "commands") wireLibrary();
     if (current.name === "settings") wireSettings();
     if (current.name === "glossary") {

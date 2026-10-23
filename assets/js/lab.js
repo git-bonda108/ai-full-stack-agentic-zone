@@ -111,10 +111,7 @@ ${JSON.stringify({ vars: u.vars, canvas: u.canvas, rubric: u.rubric }, null, 2)}
   }
 
   function download(name, obj) {
-    const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob); a.download = name; a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    Z.saveFile(name, JSON.stringify(obj, null, 2), window.ZoneApp && window.ZoneApp.toast);
   }
 
   function wire(route, toast) {

@@ -37,6 +37,7 @@ use case, the shell (bash / PowerShell) and deck vs scroll view.
 | `reference-app/` | P2P Sentinel, fully built: FastAPI + OpenAI Agents SDK + React, mock ERP, MCP server, tests, evals, Docker, Azure scripts |
 | `.github/workflows/` | Reference-app CI (lint, tests, evals) and keyless deploy (OIDC), plus training-site publishing |
 | `docs/AUTHORING.md` | How to add modules, card types and use cases |
+| `assets/js/export.js` | "⬇ Excel" button: exports every card, prompt and command, the backlog, quizzes and variables to an .xlsx workbook with Done/Notes columns |
 | `dist/agentic-zone-runbook.html` | The whole runbook as one self-contained file (`python tools/build_single.py`): double-click to open, or host anywhere |
 
 ## The runbook at a glance
