@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic Zone Runbook</title>
+  <meta name="description" content="AI full-stack agentic engineering runbook: concepts, Claude Code prompts, commands and labs from planning to deploying and observing on Azure.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/zone.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side" id="side"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="content" id="content"><div class="empty">Loading…</div></main>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- engine -->
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/render.js"></script>
+  <script src="assets/js/lab.js"></script>
+
+  <!-- shared data -->
+  <script src="content/data.js"></script>
+  <script src="content/files.js"></script>
+
+  <!-- generic modules (any use case) -->
+  <script src="content/modules/00-orientation.js"></script>
+  <script src="content/modules/01-agents.js"></script>
+  <script src="content/modules/02-multi-agent.js"></script>
+  <script src="content/modules/03-context.js"></script>
+  <script src="content/modules/04-claude-code.js"></script>
+  <script src="content/modules/05-production-reality.js"></script>
+  <script src="content/modules/07-setup.js"></script>
+  <script src="content/modules/08-plan.js"></script>
+  <script src="content/modules/09-design.js"></script>
+  <script src="content/modules/13-test.js"></script>
+  <script src="content/modules/14-secure.js"></script>
+  <script src="content/modules/15-deploy.js"></script>
+  <script src="content/modules/16-observe.js"></script>
+
+  <!-- use cases (each adds its own reveal + sprint modules) -->
+  <script src="content/usecases/p2p-sentinel.js"></script>
+  <script src="content/usecases/claims-denial-navigator.js"></script>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

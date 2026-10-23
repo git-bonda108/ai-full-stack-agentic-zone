@@ -1,0 +1,11 @@
+INVOICE
+Invoice Number: INV-G-007
+Vendor ID: V-300
+Vendor Name: Globex Components
+PO Number: PO-1003
+Invoice Date: 2026-10-08
+Currency: EUR
+Bank Account (IBAN): FR1420041010050500013M02606
+Lines:
+- CMP-77 | Control board | qty 20 | unit 85.00
+Total: 1700.00

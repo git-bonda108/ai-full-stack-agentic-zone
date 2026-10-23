@@ -1,0 +1,17 @@
+# ---------------------------------------------------------------------------
+# P2P Sentinel - developer / CI dependencies
+# Install:  pip install -r requirements.txt -r requirements-dev.txt
+# ---------------------------------------------------------------------------
+
+# pytest: the test runner (like JUnit)
+pytest>=8,<10
+# pytest-asyncio: lets tests use async/await (our agent pipeline is async)
+pytest-asyncio>=0.23
+# pytest-cov: code-coverage reports (like JaCoCo)
+pytest-cov>=5
+# ruff: extremely fast linter + formatter (replaces flake8, isort, black) - like ESLint + Prettier
+ruff>=0.6
+# pip-audit: scans installed packages for known vulnerabilities (like npm audit / OWASP dependency-check)
+pip-audit>=2.7
+# bandit: static security analysis for Python code (like SpotBugs/FindSecBugs)
+bandit>=1.7

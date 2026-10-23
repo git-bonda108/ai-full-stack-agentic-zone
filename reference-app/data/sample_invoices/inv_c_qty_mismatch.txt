@@ -1,0 +1,11 @@
+INVOICE
+Invoice Number: INV-C-003
+Vendor ID: V-200
+Vendor Name: Northwind Logistics
+PO Number: PO-1002
+Invoice Date: 2026-10-04
+Currency: EUR
+Bank Account (IBAN): GB29NWBK60161331926819
+Lines:
+- FRT-10 | Freight pallet | qty 10 | unit 120.00
+Total: 1200.00

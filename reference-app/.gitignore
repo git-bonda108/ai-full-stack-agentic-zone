@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.egg-info/
+
+# Runtime data
+var/
+*.db
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+dist/
+frontend/test-results/
+frontend/playwright-report/
+
+# Test evidence generated per run (curated copies are kept)
+docs/test-evidence/junit.xml
+docs/test-evidence/coverage.xml
+docs/test-evidence/htmlcov/
+.ai-trace/

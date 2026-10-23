@@ -1,0 +1,35 @@
+[project]
+name = "p2p-sentinel"
+version = "0.1.0"
+description = "Agentic invoice exception resolver - reference app for the AI Full-Stack Agentic Zone training"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["frontend", "var"]
+
+[tool.ruff.lint]
+# E/F = pycodestyle + pyflakes, I = import sorting, B = bugbear, UP = pyupgrade, S = bandit-style security
+select = ["E", "F", "I", "B", "UP", "S"]
+ignore = ["S101", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B"]
+"evals/**" = ["S"]
+# Claude Code hooks: stdlib-only scripts run by the system python3 (may be < 3.11), calling git/ruff/pytest
+".claude/hooks/**" = ["S603", "S607", "E501", "UP017"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["backend/app"]
+omit = ["backend/app/observability.py"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "frontend", "evals"]

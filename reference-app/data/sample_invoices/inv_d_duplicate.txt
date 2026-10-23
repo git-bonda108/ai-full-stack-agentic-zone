@@ -1,0 +1,13 @@
+INVOICE
+Invoice Number: INV-A-001
+Vendor ID: V-100
+Vendor Name: Acme Industrial Supplies
+PO Number: PO-1001
+Invoice Date: 2026-10-01
+Currency: EUR
+Bank Account (IBAN): DE89370400440532013000
+Lines:
+- GLV-01 | Safety gloves | qty 100 | unit 4.50
+- HLM-02 | Safety helmet | qty 50 | unit 22.00
+Total: 1550.00
+Note: Resent - please process.

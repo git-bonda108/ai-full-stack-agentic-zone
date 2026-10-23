@@ -1,0 +1,240 @@
+[
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5001')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5001')",
+      "type": "API_GoodsReceipts.A_GoodsReceiptsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "MaterialDocument": "GR-5001",
+    "MaterialDocumentYear": "2026",
+    "PurchaseOrder": "PO-1001",
+    "DocumentDate": "/Date(1727222400000)/",
+    "PostingDate": "/Date(1727222400000)/",
+    "GoodsMovementCode": "01",
+    "ReferenceDocument": "DN-8800",
+    "MaterialDocumentHeaderText": "Goods receipt for PO",
+    "InventoryTransactionType": "WE",
+    "CreatedByUser": "WAREHOUSE01",
+    "CreationDate": "/Date(1727222400000)/",
+    "CreationTime": "PT09H30M00S",
+    "DeliveryNote": "DN-8800",
+    "BillOfLading": "BOL-4400",
+    "Plant": "1010",
+    "to_MaterialDocumentItem": {
+      "results": [
+        {
+          "__metadata": {
+            "id": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5001-1')",
+            "uri": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5001-1')",
+            "type": "API_MaterialDocumentItem.A_MaterialDocumentItemType",
+            "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+          },
+          "MaterialDocument": "GR-5001",
+          "MaterialDocumentItem": "1",
+          "Material": "GLV-01",
+          "Plant": "1010",
+          "StorageLocation": "0001",
+          "GoodsMovementType": "101",
+          "PurchaseOrder": "PO-1001",
+          "PurchaseOrderItem": "00010",
+          "QuantityInEntryUnit": "100",
+          "EntryUnit": "EA",
+          "QuantityInBaseUnit": "100",
+          "MaterialBaseUnit": "EA",
+          "Batch": "",
+          "InventoryStockType": "01",
+          "GoodsMovementIsCancelled": false,
+          "IsCompletelyDelivered": true,
+          "ManufactureDate": null,
+          "ShelfLifeExpirationDate": null
+        },
+        {
+          "__metadata": {
+            "id": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5001-2')",
+            "uri": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5001-2')",
+            "type": "API_MaterialDocumentItem.A_MaterialDocumentItemType",
+            "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+          },
+          "MaterialDocument": "GR-5001",
+          "MaterialDocumentItem": "2",
+          "Material": "HLM-02",
+          "Plant": "1010",
+          "StorageLocation": "0001",
+          "GoodsMovementType": "101",
+          "PurchaseOrder": "PO-1001",
+          "PurchaseOrderItem": "00020",
+          "QuantityInEntryUnit": "50",
+          "EntryUnit": "EA",
+          "QuantityInBaseUnit": "50",
+          "MaterialBaseUnit": "EA",
+          "Batch": "",
+          "InventoryStockType": "01",
+          "GoodsMovementIsCancelled": false,
+          "IsCompletelyDelivered": true,
+          "ManufactureDate": null,
+          "ShelfLifeExpirationDate": null
+        }
+      ]
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5002')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5002')",
+      "type": "API_GoodsReceipts.A_GoodsReceiptsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "MaterialDocument": "GR-5002",
+    "MaterialDocumentYear": "2026",
+    "PurchaseOrder": "PO-1002",
+    "DocumentDate": "/Date(1727222400000)/",
+    "PostingDate": "/Date(1727222400000)/",
+    "GoodsMovementCode": "01",
+    "ReferenceDocument": "DN-8801",
+    "MaterialDocumentHeaderText": "Goods receipt for PO",
+    "InventoryTransactionType": "WE",
+    "CreatedByUser": "WAREHOUSE01",
+    "CreationDate": "/Date(1727222400000)/",
+    "CreationTime": "PT09H30M00S",
+    "DeliveryNote": "DN-8801",
+    "BillOfLading": "BOL-4401",
+    "Plant": "1010",
+    "to_MaterialDocumentItem": {
+      "results": [
+        {
+          "__metadata": {
+            "id": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5002-1')",
+            "uri": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5002-1')",
+            "type": "API_MaterialDocumentItem.A_MaterialDocumentItemType",
+            "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+          },
+          "MaterialDocument": "GR-5002",
+          "MaterialDocumentItem": "1",
+          "Material": "FRT-10",
+          "Plant": "1010",
+          "StorageLocation": "0001",
+          "GoodsMovementType": "101",
+          "PurchaseOrder": "PO-1002",
+          "PurchaseOrderItem": "00010",
+          "QuantityInEntryUnit": "8",
+          "EntryUnit": "EA",
+          "QuantityInBaseUnit": "8",
+          "MaterialBaseUnit": "EA",
+          "Batch": "",
+          "InventoryStockType": "01",
+          "GoodsMovementIsCancelled": false,
+          "IsCompletelyDelivered": true,
+          "ManufactureDate": null,
+          "ShelfLifeExpirationDate": null
+        }
+      ]
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5003')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5003')",
+      "type": "API_GoodsReceipts.A_GoodsReceiptsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "MaterialDocument": "GR-5003",
+    "MaterialDocumentYear": "2026",
+    "PurchaseOrder": "PO-1003",
+    "DocumentDate": "/Date(1727222400000)/",
+    "PostingDate": "/Date(1727222400000)/",
+    "GoodsMovementCode": "01",
+    "ReferenceDocument": "DN-8802",
+    "MaterialDocumentHeaderText": "Goods receipt for PO",
+    "InventoryTransactionType": "WE",
+    "CreatedByUser": "WAREHOUSE01",
+    "CreationDate": "/Date(1727222400000)/",
+    "CreationTime": "PT09H30M00S",
+    "DeliveryNote": "DN-8802",
+    "BillOfLading": "BOL-4402",
+    "Plant": "1010",
+    "to_MaterialDocumentItem": {
+      "results": [
+        {
+          "__metadata": {
+            "id": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5003-1')",
+            "uri": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5003-1')",
+            "type": "API_MaterialDocumentItem.A_MaterialDocumentItemType",
+            "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+          },
+          "MaterialDocument": "GR-5003",
+          "MaterialDocumentItem": "1",
+          "Material": "CMP-77",
+          "Plant": "1010",
+          "StorageLocation": "0001",
+          "GoodsMovementType": "101",
+          "PurchaseOrder": "PO-1003",
+          "PurchaseOrderItem": "00010",
+          "QuantityInEntryUnit": "20",
+          "EntryUnit": "EA",
+          "QuantityInBaseUnit": "20",
+          "MaterialBaseUnit": "EA",
+          "Batch": "",
+          "InventoryStockType": "01",
+          "GoodsMovementIsCancelled": false,
+          "IsCompletelyDelivered": true,
+          "ManufactureDate": null,
+          "ShelfLifeExpirationDate": null
+        }
+      ]
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5004')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_GoodsReceipts/GoodsReceipts('GR-5004')",
+      "type": "API_GoodsReceipts.A_GoodsReceiptsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "MaterialDocument": "GR-5004",
+    "MaterialDocumentYear": "2026",
+    "PurchaseOrder": "PO-1004",
+    "DocumentDate": "/Date(1727222400000)/",
+    "PostingDate": "/Date(1727222400000)/",
+    "GoodsMovementCode": "01",
+    "ReferenceDocument": "DN-8803",
+    "MaterialDocumentHeaderText": "Goods receipt for PO",
+    "InventoryTransactionType": "WE",
+    "CreatedByUser": "WAREHOUSE01",
+    "CreationDate": "/Date(1727222400000)/",
+    "CreationTime": "PT09H30M00S",
+    "DeliveryNote": "DN-8803",
+    "BillOfLading": "BOL-4403",
+    "Plant": "1010",
+    "to_MaterialDocumentItem": {
+      "results": [
+        {
+          "__metadata": {
+            "id": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5004-1')",
+            "uri": "http://erp.local/sap/opu/odata/sap/API_MaterialDocumentItem/MaterialDocumentItem('GR-5004-1')",
+            "type": "API_MaterialDocumentItem.A_MaterialDocumentItemType",
+            "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+          },
+          "MaterialDocument": "GR-5004",
+          "MaterialDocumentItem": "1",
+          "Material": "LAP-15",
+          "Plant": "1010",
+          "StorageLocation": "0001",
+          "GoodsMovementType": "101",
+          "PurchaseOrder": "PO-1004",
+          "PurchaseOrderItem": "00010",
+          "QuantityInEntryUnit": "12",
+          "EntryUnit": "EA",
+          "QuantityInBaseUnit": "12",
+          "MaterialBaseUnit": "EA",
+          "Batch": "",
+          "InventoryStockType": "01",
+          "GoodsMovementIsCancelled": false,
+          "IsCompletelyDelivered": true,
+          "ManufactureDate": null,
+          "ShelfLifeExpirationDate": null
+        }
+      ]
+    }
+  }
+]

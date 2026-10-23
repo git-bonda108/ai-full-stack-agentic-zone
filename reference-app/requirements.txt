@@ -1,0 +1,30 @@
+# ---------------------------------------------------------------------------
+# P2P Sentinel - runtime dependencies (Python 3.11+)
+# Install:  pip install -r requirements.txt
+# ---------------------------------------------------------------------------
+
+# FastAPI: the web framework for our REST API (think Spring Boot @RestController for Python)
+fastapi>=0.115,<1.0
+# Uvicorn: the ASGI server that actually runs FastAPI (like Tomcat/Netty); [standard] adds fast event loop + reload
+uvicorn[standard]>=0.30
+# Pydantic: typed data models + validation (like Java records + Bean Validation); FastAPI uses it for request/response bodies
+pydantic>=2.7,<3
+# pydantic-settings: loads configuration from environment variables / .env files into a typed Settings class
+pydantic-settings>=2.3,<3
+# SQLAlchemy 2.x: the ORM / SQL toolkit (like JPA/Hibernate) - talks to SQLite locally and PostgreSQL in Azure
+sqlalchemy>=2.0,<3
+# psycopg 3: the PostgreSQL driver used by SQLAlchemy when DATABASE_URL starts with postgresql+psycopg://
+psycopg[binary]>=3.1,<4
+# httpx: modern HTTP client (sync + async) - used to call the ERP and Jira REST APIs
+httpx>=0.27,<1.0
+# OpenAI Agents SDK: agents, tools, guardrails, handoffs, tracing - the agent runtime of this app
+openai-agents>=0.24,<0.25
+# MCP Python SDK: lets us expose the ERP as a Model Context Protocol server that Claude Code can call
+mcp>=1.9
+# Azure Monitor OpenTelemetry distro: one call sends traces/logs/metrics to Application Insights
+azure-monitor-opentelemetry>=1.6,<2
+# OpenTelemetry FastAPI instrumentation: automatic spans for every HTTP request
+opentelemetry-instrumentation-fastapi>=0.48b0
+
+# Optional - only needed when LLM_PROVIDER=anthropic (Claude via LiteLLM):
+#   pip install "openai-agents[litellm]"

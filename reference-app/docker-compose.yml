@@ -1,0 +1,52 @@
+# Full local stack:  docker compose up --build
+#   UI   http://localhost:8080
+#   API  http://localhost:8000/docs
+#   ERP  http://localhost:8001/docs
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: p2p
+      POSTGRES_PASSWORD: p2p_local_only  # local development only - use Key Vault / secrets in Azure
+      POSTGRES_DB: p2p
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U p2p -d p2p"]
+      interval: 5s
+      retries: 10
+
+  erp:
+    build: { context: ., dockerfile: docker/erp.Dockerfile }
+    ports: ["8001:8001"]
+
+  api:
+    build: { context: ., dockerfile: docker/api.Dockerfile }
+    environment:
+      DATABASE_URL: postgresql+psycopg://p2p:p2p_local_only@db:5432/p2p
+      ERP_BASE_URL: http://erp:8001
+      LLM_PROVIDER: ${LLM_PROVIDER:-offline}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4.1-mini}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      JIRA_BASE_URL: ${JIRA_BASE_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_API_TOKEN: ${JIRA_API_TOKEN:-}
+      JIRA_PROJECT_KEY: ${JIRA_PROJECT_KEY:-AP}
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ${APPLICATIONINSIGHTS_CONNECTION_STRING:-}
+      CORS_ORIGINS: http://localhost:8080,http://localhost:5173
+    ports: ["8000:8000"]
+    depends_on:
+      db: { condition: service_healthy }
+      erp: { condition: service_started }
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    ports: ["8080:8080"]
+    depends_on: [api]
+
+volumes:
+  pgdata:

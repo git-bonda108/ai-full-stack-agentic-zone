@@ -1,0 +1,15 @@
+.venv
+venv
+**/__pycache__
+**/*.pyc
+var
+.env
+.env.*
+!.env.example
+frontend/node_modules
+frontend/dist
+.pytest_cache
+.ruff_cache
+htmlcov
+docs/test-evidence/htmlcov
+.git

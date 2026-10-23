@@ -1,0 +1,67 @@
+Zone.addModule({
+  id: "design", num: "09", order: 9, phase: "sdlc", stage: "Design",
+  icon: "📐", color: "brand", duration: "50 min",
+  title: "Design: architecture, workflow, contracts and decisions", short: "Design",
+  subtitle: "Diagrams as code, an API contract before code, and ADRs for every big choice",
+  goals: ["Context, container and sequence diagrams", "Agent topology + ERD", "API contract + 3 ADRs"],
+  cards: [
+    {
+      type: "table", title: "What a real design phase produces",
+      lead: "All of it is Markdown + Mermaid in `docs/`, versioned next to the code, and Claude keeps it current.",
+      head: ["Artifact", "Answers", "File"],
+      rows: [
+        ["Context diagram (C4 L1)", "Who uses it, which systems it talks to", "`docs/architecture.md`"],
+        ["Container diagram (C4 L2)", "Deployable pieces and protocols", "`docs/architecture.md`"],
+        ["Sequence diagram", "What happens, in order, for one invoice", "`docs/architecture.md`"],
+        ["Agent topology", "Which agents, which tools, who decides", "`docs/architecture.md`"],
+        ["ERD", "Tables and relationships", "`docs/architecture.md`"],
+        ["API contract", "Endpoints, schemas, errors, idempotency", "`/docs` (OpenAPI) + `docs/api.md`"],
+        ["ADRs", "Why we chose X over Y", "`docs/adr/000N-*.md`"],
+        ["NFRs", "Latency, cost, availability, security targets", "`docs/nfr.md`"],
+      ],
+    },
+    {
+      type: "prompt", title: "Prompt: architecture in Plan mode with the architect subagent",
+      lead: "**Shift+Tab → Plan mode**. Design is research and reasoning, so no file edits until you approve.",
+      prompt: "Use the architect subagent. From docs/SPEC.md produce docs/architecture.md containing these Mermaid diagrams, each with a 3-line explanation:\n1. C4 context: users (AP clerk, AP manager, auditor), {{app.name}}, ERP, Jira, LLM provider, Azure Monitor\n2. C4 container: React SPA (Static Web Apps), FastAPI API (Container Apps), mock ERP (Container Apps), PostgreSQL, App Insights\n3. Sequence diagram for one invoice: submit → extract → parallel match & risk → policy decision → resolution → audit → Jira → human decision\n4. Agent topology: which agent has which tools, and that the policy engine (code) owns the decision\n5. ERD for invoices, invoice_lines, cases, audit_events\nThen check the design against the 9 layers and list gaps. Show me the plan first.",
+      expect: "A plan → approve → `docs/architecture.md` that renders in VS Code's Markdown preview (Mermaid extension).",
+    },
+    { type: "diagram", title: "Context diagram", mermaidRef: "context" },
+    { type: "diagram", title: "Container diagram (what we deploy)", mermaidRef: "container" },
+    { type: "diagram", title: "One invoice, end to end (sequence)", mermaidRef: "sequence" },
+    { type: "diagram", title: "Data model (ERD)", mermaidRef: "erd" },
+    {
+      type: "prompt", title: "Prompt: contract first, then review it like an engineer",
+      lead: "AI proposes the contract; **you** evaluate versioning, idempotency and error semantics before a line of implementation exists.",
+      prompt: "Write docs/api.md: the REST contract for {{app.name}} from SPEC §10. For each endpoint give the method, path, request and response JSON schema with an example, and the error responses (400/404/409/422/503) with when each happens.\nThen critique your own contract on: (1) idempotency (what happens if the same invoice is POSTed twice?), (2) versioning (how do we add a field without breaking the UI?), (3) long-running work (should batch be async with 202 + polling?), (4) pagination for GET /api/cases. Propose concrete changes and mark which ones you recommend for Sprint 1.",
+    },
+    {
+      type: "file", title: "ADR template", path: "docs/adr/0001-hybrid-workflow-not-autonomous-agent.md", lang: "markdown",
+      code: "# ADR-0001: Hybrid workflow, not an autonomous agent\n\nStatus: Accepted · Date: 2026-10-24 · Deciders: AP product owner, tech lead\n\n## Context\nInvoices follow a known path (extract → match → risk → decide → resolve) but the\ninputs are unstructured and the evidence gathering varies per invoice. Auditors\nrequire the same input to produce the same decision.\n\n## Decision\nCode orchestrates a fixed workflow. LLM agents handle extraction, evidence\ngathering and explanations. A deterministic policy engine makes the decision.\n\n## Alternatives considered\n1. Fully autonomous agent with all tools: flexible, but non-deterministic paths,\n   variable cost, hard to audit. Rejected.\n2. No LLM at all (OCR + rules): deterministic, but brittle on free-text invoices\n   and cannot explain or draft vendor messages. Rejected.\n\n## Consequences\n+ Reproducible decisions, unit-testable policy, bounded cost per invoice\n+ Agents can be swapped or re-prompted without changing decisions\n- New exception types need a code change in policy.py (intentional)\n- Two places to maintain (agent prompts and rules)",
+      points: ["Other ADRs we write: **0002** deterministic policy engine owns decisions · **0003** Azure Container Apps over AKS"],
+    },
+    {
+      type: "prompt", title: "Prompt: record the decisions",
+      prompt: "Use the adr-writer skill (or write them directly) to create docs/adr/0002-deterministic-policy-engine.md and docs/adr/0003-azure-container-apps-over-aks.md. For 0003 compare Container Apps, AKS and App Service on: ops effort, cost at our scale (a few hundred invoices/day), scale-to-zero, revisions/rollback, and the skills the team already has. Then add ADR-0002 and ADR-0003 to docs/session-facts.md under Decisions.",
+    },
+    {
+      type: "table", title: "Non-functional requirements (agree them now, test them later)",
+      head: ["Quality", "Target", "How we'll verify"],
+      rows: [
+        ["Latency", "p95 < 8 s per invoice in LLM mode; < 300 ms offline", "App Insights request duration; eval runner timings"],
+        ["Cost", "< €0.01 of LLM tokens per invoice on a small model", "Token metrics per agent step"],
+        ["Correctness", "8/8 golden scenarios; domain coverage ≥ 90%", "`python -m evals.run_evals`, pytest-cov"],
+        ["Safety", "0 decisions set by an LLM; 100% of injection samples HOLD", "Unit tests + eval case INV-F"],
+        ["Availability", "Degrades to offline mode if the LLM is down", "Runbook drill"],
+        ["Auditability", "Every step in `audit_events`", "Integration test asserts the audit trail"],
+      ],
+    },
+    {
+      type: "quiz", title: "Checkpoint",
+      q: "Why write the API contract before implementing it, when Claude could just generate both?",
+      options: ["Tradition", "So humans can review idempotency, errors and versioning while changes are cheap, and the frontend can start in parallel", "Claude can't write code without it", "To make the PR bigger"],
+      answer: 1,
+      why: "The contract is a **decision**; the implementation is a consequence. Reviewing it first is cheap, and frontend and backend can then build against the same contract at the same time.",
+    },
+  ],
+});

@@ -1,0 +1,57 @@
+# Keyless deploy to Azure with OIDC (no stored passwords). Set up with infra/azure/github-oidc.sh.
+# Needs repo secrets AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+# and repo variables AZ_RG, AZ_ACR, AZ_API_APP, AZ_ERP_APP, AZ_SWA.
+name: reference-app-deploy
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["reference-app/**"]
+permissions:
+  id-token: write   # lets the job request an OIDC token from GitHub
+  contents: read
+concurrency: { group: deploy-dev, cancel-in-progress: false }
+defaults:
+  run:
+    working-directory: reference-app
+jobs:
+  gates:
+    uses: ./.github/workflows/reference-app-ci.yml
+  deploy:
+    needs: gates
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      TAG: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Build images in ACR
+        run: |
+          az acr build -r ${{ vars.AZ_ACR }} -t p2p-api:$TAG -f docker/api.Dockerfile .
+          az acr build -r ${{ vars.AZ_ACR }} -t p2p-erp:$TAG -f docker/erp.Dockerfile .
+      - name: Roll out new revisions
+        run: |
+          az extension add --name containerapp --upgrade --only-show-errors
+          az containerapp update -g ${{ vars.AZ_RG }} -n ${{ vars.AZ_ERP_APP }} --image ${{ vars.AZ_ACR }}.azurecr.io/p2p-erp:$TAG -o none
+          az containerapp update -g ${{ vars.AZ_RG }} -n ${{ vars.AZ_API_APP }} --image ${{ vars.AZ_ACR }}.azurecr.io/p2p-api:$TAG \
+            --revision-suffix "r${GITHUB_RUN_NUMBER}" -o none
+      - name: Smoke test
+        run: |
+          API="https://$(az containerapp show -g ${{ vars.AZ_RG }} -n ${{ vars.AZ_API_APP }} --query properties.configuration.ingress.fqdn -o tsv)"
+          echo "API_URL=$API" >> "$GITHUB_ENV"
+          for i in 1 2 3 4 5 6; do curl -fsS "$API/healthz" && break || sleep 10; done
+          curl -fsS "$API/readyz"
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Build and deploy frontend
+        run: |
+          TOKEN=$(az staticwebapp secrets list -g ${{ vars.AZ_RG }} -n ${{ vars.AZ_SWA }} --query properties.apiKey -o tsv)
+          echo "::add-mask::$TOKEN"
+          cd frontend && npm ci && VITE_API_BASE_URL="$API_URL" npm run build
+          cp ../infra/azure/staticwebapp.config.json dist/
+          npx --yes @azure/static-web-apps-cli deploy ./dist --deployment-token "$TOKEN" --env production

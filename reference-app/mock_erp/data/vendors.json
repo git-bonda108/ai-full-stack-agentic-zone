@@ -1,0 +1,242 @@
+[
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-100')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-100')",
+      "type": "API_Vendors.A_VendorsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "Supplier": "V-100",
+    "SupplierName": "Acme Industrial Supplies",
+    "SupplierFullName": "Acme Industrial Supplies Ltd.",
+    "SupplierAccountGroup": "KRED",
+    "Country": "DE",
+    "CityName": "Berlin",
+    "PostalCode": "10115",
+    "StreetName": "Industriestrasse 12",
+    "Region": "",
+    "Language": "EN",
+    "PhoneNumber1": "+49 30 5550012",
+    "FaxNumber": "",
+    "EmailAddress": "ap@acme.example",
+    "TaxNumber1": "DE811907980",
+    "VATRegistration": "DE123456789",
+    "IBAN": "DE89370400440532013000",
+    "BankCountryKey": "DE",
+    "BankInternalID": "37040044",
+    "SWIFTCode": "COBADEFFXXX",
+    "BankAccountHolderName": "Acme Industrial Supplies",
+    "PaymentTerms": "NT30",
+    "PaymentMethod": "T",
+    "ReconciliationAccount": "160000",
+    "CompanyCode": "1010",
+    "PurchasingOrganization": "1010",
+    "OrderCurrency": "EUR",
+    "IncotermsClassification": "FCA",
+    "PostingIsBlocked": false,
+    "PaymentIsBlocked": false,
+    "PurchasingIsBlocked": false,
+    "DeletionIndicator": false,
+    "SupplierCorporateGroup": "",
+    "IsOneTimeAccount": false,
+    "MinorityGroup": "",
+    "CreatedByUser": "MIGRATION",
+    "CreationDate": "/Date(1704067200000)/",
+    "LastChangedByUser": "JSMITH",
+    "LastChangeDateTime": "/Date(1727684100000+0000)/",
+    "AuthorizationGroup": "",
+    "SupplierRiskClass": "A",
+    "ESGScore": 72,
+    "DataControllerSet": false,
+    "to_SupplierCompany": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-100')/to_SupplierCompany"
+      }
+    },
+    "to_SupplierPurchasingOrg": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-100')/to_SupplierPurchasingOrg"
+      }
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-200')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-200')",
+      "type": "API_Vendors.A_VendorsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "Supplier": "V-200",
+    "SupplierName": "Northwind Logistics",
+    "SupplierFullName": "Northwind Logistics Ltd.",
+    "SupplierAccountGroup": "KRED",
+    "Country": "GB",
+    "CityName": "London",
+    "PostalCode": "10122",
+    "StreetName": "Industriestrasse 13",
+    "Region": "",
+    "Language": "EN",
+    "PhoneNumber1": "+49 30 5550112",
+    "FaxNumber": "",
+    "EmailAddress": "ap@northwind.example",
+    "TaxNumber1": "GB811907981",
+    "VATRegistration": "GB123456790",
+    "IBAN": "GB29NWBK60161331926819",
+    "BankCountryKey": "GB",
+    "BankInternalID": "37040045",
+    "SWIFTCode": "COBAGBFFXXX",
+    "BankAccountHolderName": "Northwind Logistics",
+    "PaymentTerms": "NT30",
+    "PaymentMethod": "T",
+    "ReconciliationAccount": "160000",
+    "CompanyCode": "1010",
+    "PurchasingOrganization": "1010",
+    "OrderCurrency": "EUR",
+    "IncotermsClassification": "FCA",
+    "PostingIsBlocked": false,
+    "PaymentIsBlocked": false,
+    "PurchasingIsBlocked": false,
+    "DeletionIndicator": false,
+    "SupplierCorporateGroup": "",
+    "IsOneTimeAccount": false,
+    "MinorityGroup": "",
+    "CreatedByUser": "MIGRATION",
+    "CreationDate": "/Date(1704067200000)/",
+    "LastChangedByUser": "JSMITH",
+    "LastChangeDateTime": "/Date(1727684100000+0000)/",
+    "AuthorizationGroup": "",
+    "SupplierRiskClass": "A",
+    "ESGScore": 69,
+    "DataControllerSet": false,
+    "to_SupplierCompany": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-200')/to_SupplierCompany"
+      }
+    },
+    "to_SupplierPurchasingOrg": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-200')/to_SupplierPurchasingOrg"
+      }
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-300')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-300')",
+      "type": "API_Vendors.A_VendorsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "Supplier": "V-300",
+    "SupplierName": "Globex Components",
+    "SupplierFullName": "Globex Components Ltd.",
+    "SupplierAccountGroup": "KRED",
+    "Country": "FR",
+    "CityName": "Lyon",
+    "PostalCode": "10129",
+    "StreetName": "Industriestrasse 14",
+    "Region": "",
+    "Language": "EN",
+    "PhoneNumber1": "+49 30 5550212",
+    "FaxNumber": "",
+    "EmailAddress": "ap@globex.example",
+    "TaxNumber1": "FR811907982",
+    "VATRegistration": "FR123456791",
+    "IBAN": "FR1420041010050500013M02606",
+    "BankCountryKey": "FR",
+    "BankInternalID": "37040046",
+    "SWIFTCode": "COBAFRFFXXX",
+    "BankAccountHolderName": "Globex Components",
+    "PaymentTerms": "NT30",
+    "PaymentMethod": "T",
+    "ReconciliationAccount": "160000",
+    "CompanyCode": "1010",
+    "PurchasingOrganization": "1010",
+    "OrderCurrency": "EUR",
+    "IncotermsClassification": "FCA",
+    "PostingIsBlocked": true,
+    "PaymentIsBlocked": true,
+    "PurchasingIsBlocked": true,
+    "DeletionIndicator": false,
+    "SupplierCorporateGroup": "",
+    "IsOneTimeAccount": false,
+    "MinorityGroup": "",
+    "CreatedByUser": "MIGRATION",
+    "CreationDate": "/Date(1704067200000)/",
+    "LastChangedByUser": "JSMITH",
+    "LastChangeDateTime": "/Date(1727684100000+0000)/",
+    "AuthorizationGroup": "",
+    "SupplierRiskClass": "B",
+    "ESGScore": 66,
+    "DataControllerSet": false,
+    "to_SupplierCompany": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-300')/to_SupplierCompany"
+      }
+    },
+    "to_SupplierPurchasingOrg": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-300')/to_SupplierPurchasingOrg"
+      }
+    }
+  },
+  {
+    "__metadata": {
+      "id": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-400')",
+      "uri": "http://erp.local/sap/opu/odata/sap/API_Vendors/Vendors('V-400')",
+      "type": "API_Vendors.A_VendorsType",
+      "etag": "W/\"datetime'2026-09-30T08%3A15%3A00'\""
+    },
+    "Supplier": "V-400",
+    "SupplierName": "Initech Office Solutions",
+    "SupplierFullName": "Initech Office Solutions Ltd.",
+    "SupplierAccountGroup": "KRED",
+    "Country": "NL",
+    "CityName": "Amsterdam",
+    "PostalCode": "10136",
+    "StreetName": "Industriestrasse 15",
+    "Region": "",
+    "Language": "EN",
+    "PhoneNumber1": "+49 30 5550312",
+    "FaxNumber": "",
+    "EmailAddress": "ap@initech.example",
+    "TaxNumber1": "NL811907983",
+    "VATRegistration": "NL123456792",
+    "IBAN": "NL91ABNA0417164300",
+    "BankCountryKey": "NL",
+    "BankInternalID": "37040047",
+    "SWIFTCode": "COBANLFFXXX",
+    "BankAccountHolderName": "Initech Office Solutions",
+    "PaymentTerms": "NT30",
+    "PaymentMethod": "T",
+    "ReconciliationAccount": "160000",
+    "CompanyCode": "1010",
+    "PurchasingOrganization": "1010",
+    "OrderCurrency": "EUR",
+    "IncotermsClassification": "FCA",
+    "PostingIsBlocked": false,
+    "PaymentIsBlocked": false,
+    "PurchasingIsBlocked": false,
+    "DeletionIndicator": false,
+    "SupplierCorporateGroup": "",
+    "IsOneTimeAccount": false,
+    "MinorityGroup": "",
+    "CreatedByUser": "MIGRATION",
+    "CreationDate": "/Date(1704067200000)/",
+    "LastChangedByUser": "JSMITH",
+    "LastChangeDateTime": "/Date(1727684100000+0000)/",
+    "AuthorizationGroup": "",
+    "SupplierRiskClass": "A",
+    "ESGScore": 63,
+    "DataControllerSet": false,
+    "to_SupplierCompany": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-400')/to_SupplierCompany"
+      }
+    },
+    "to_SupplierPurchasingOrg": {
+      "__deferred": {
+        "uri": "http://erp.local/Vendors('V-400')/to_SupplierPurchasingOrg"
+      }
+    }
+  }
+]

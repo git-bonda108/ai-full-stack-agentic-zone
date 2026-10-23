@@ -1,0 +1,11 @@
+INVOICE
+Invoice Number: INV-H-008
+Vendor ID: V-400
+Vendor Name: Initech Office Solutions
+PO Number: PO-1004
+Invoice Date: 2026-10-09
+Currency: EUR
+Bank Account (IBAN): NL91ABNA0417164300
+Lines:
+- LAP-15 | Laptop | qty 12 | unit 1150.00
+Total: 13800.00
