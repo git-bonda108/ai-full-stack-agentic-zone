@@ -30,7 +30,7 @@ use case, the shell (bash / PowerShell) and deck vs scroll view.
 |---|---|
 | `index.html`, `assets/` | The runbook web app (vanilla JS, no framework, no build) |
 | `content/modules/` | Generic modules: agents, multi-agent, context engineering, Claude Code craft, why AI fails + 9 layers, setup, plan (Jira via MCP), design, test, secure/RAI/XAI, deploy, observe |
-| `content/usecases/` | Use-case packs. `p2p-sentinel.js` has its own reveal and three sprint modules; `claims-denial-navigator.js` is canvas-only |
+| `content/usecases/` | Use-case packs. `p2p-sentinel.js` has its own reveal and three sprint modules. Breakout teams add more through the Use-Case Lab |
 | `content/data.js` | Session plan, the 9-layer stack, glossary |
 | `content/files.js` | Generated: real repo files shown in file cards (`python tools/build_files.py`) |
 | `starter-kit/` | What trainees copy into a new project: CLAUDE.md, hooks, skills, subagents, rules, `.mcp.json`, spec, labs |
